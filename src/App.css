@@ -1,0 +1,676 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;700&family=Lato:wght@400;700&family=Playfair+Display:wght@400;700&family=Press+Start+2P&family=Montserrat:wght@400;700&family=Raleway:wght@400;700&family=Merriweather:wght@400;700&display=swap');
+
+
+* {
+  box-sizing: border-box;
+}
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at top left, #070707, #0f0f0f);
+  font-family: 'Garamond', 'Times New Roman', serif;
+  color: #ddd;
+}
+
+.pokedex-retro {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 3px solid #3a3a3a;
+  box-shadow: inset 0 0 45px #000;
+  background: linear-gradient(180deg, #0b0b0b 0%, #121212 100%);
+}
+
+.header {
+  padding: 14px;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  color: #d9d9d9;
+  letter-spacing: 2px;
+  background: linear-gradient(#151515, #0f0f0f);
+  border-bottom: 2px solid #333;
+  text-shadow: 0 0 6px rgba(255,255,255,0.04);
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  gap: 18px;
+  padding: 18px;
+  overflow: hidden;
+}
+
+.left-panel {
+  flex: 2;
+  background: linear-gradient(180deg, rgba(18,18,18,0.95), rgba(14,14,14,0.95));
+  border-right: 2px solid #2f2f2f;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow: auto;
+  box-shadow: inset 0 0 18px #000;
+}
+
+.pokemon-name {
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  font-family: 'Cinzel Decorative', serif;
+  font-size: 26px;
+  color: #eee;
+  background: linear-gradient(145deg,#111,#1a1a1a);
+  border: 2px solid #555;
+  border-radius: 10px;
+  text-shadow: 0 0 6px rgba(150,150,150,0.12);
+  box-shadow: 0 0 12px rgba(255,255,255,0.03);
+}
+
+.sprite-box {
+  display: inline-flex;           
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 980px;               
+  padding: 18px 22px;
+  background: linear-gradient(180deg, rgba(22,22,22,0.88), rgba(14,14,14,0.88));
+  border: 2px solid #505050;
+  border-radius: 12px;
+  box-shadow: inset 0 0 18px rgba(0,0,0,0.8), 0 6px 18px rgba(0,0,0,0.6);
+}
+
+.sprite-box img {
+  width: 160px;                   
+  height: 160px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: #0f0f0f;
+  border: 2px solid #5a5a5a;
+  padding: 6px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.8));
+}
+
+.seen-owned {
+  display: inline-flex;           
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  color: #dcdcdc;
+  padding: 6px 8px;
+  background: transparent;        
+  border: none;
+  min-width: 180px;
+  max-width: calc(100% - 200px);
+  font-size: 17px;
+  line-height: 1.45;
+  align-self: stretch;
+}
+
+.seen-owned p {
+  margin: 2px 0;
+  font-family: 'Garamond', serif;
+  color: #d0d0d0;
+}
+
+.seen-owned p span,
+.seen-owned p strong {
+  color: #f5f5f5;
+  font-weight: 700;
+  text-shadow: 0 0 4px rgba(150,150,150,0.12);
+}
+
+.left-panel .sprite-box:empty,
+.left-panel .sprite-box img[src=""] {
+  justify-content: center;
+}
+
+.right-panel {
+  flex: 1;
+  min-width: 260px;
+  background: linear-gradient(180deg, #111, #0f0f0f);
+  border-left: 2px solid #2f2f2f;
+  padding: 18px;
+  overflow-y: auto;
+  box-shadow: inset 0 0 18px #000;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.boton-toggle {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(145deg, #242424, #1c1c1c);
+  color: #ddd;
+  border: 2px solid #444;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.boton-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
+
+.dex-list { list-style: none; margin: 0; padding: 0; display: block; }
+.dex-list li { display:flex; gap:8px; align-items:center; margin-bottom:10px; }
+
+.dex-button {
+  flex: 1;
+  padding: 10px 12px;
+  background: linear-gradient(145deg,#222,#181818);
+  color: #d7d7d7;
+  border: 2px solid #3f3f3f;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all .18s ease;
+}
+.dex-button:hover { transform: translateY(-2px); color:#fff; border-color:#666; }
+
+.dex-button.active {
+  background: linear-gradient(145deg,#141414,#0f0f0f);
+  border-color: #9f9f9f;
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.7), inset 0 0 6px rgba(255,255,255,0.02);
+}
+
+.btn-eliminar {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 2px solid #5b0b0b;
+  background: linear-gradient(180deg,#5b0b0b,#3a0505);
+  color: #f0cfcf;
+  cursor: pointer;
+  font-weight: 700;
+}
+.btn-eliminar:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.6); }
+
+h3 {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  color: #e6e6e6;
+  margin: 12px 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 10px;
+  border: 2px solid #333;
+  background: linear-gradient(180deg, rgba(18,18,18,0.9), rgba(12,12,12,0.9));
+  box-shadow: inset 0 0 12px rgba(0,0,0,0.7);
+}
+
+.formulario input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 2px solid #444;
+  background: rgba(10,10,10,0.8);
+  color: #ddd;
+  font-size: 15px;
+  outline: none;
+  transition: border-color .14s ease, box-shadow .14s ease;
+}
+.formulario input::placeholder { color: #8c8c8c; }
+.formulario input:focus {
+  border-color: #8a8a8a;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 6px rgba(138,138,138,0.06);
+}
+
+.formulario button {
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #555;
+  background: linear-gradient(145deg,#262626,#141414);
+  color: #eee;
+  font-weight: 800;
+  cursor: pointer;
+}
+.formulario button:hover { transform: translateY(-2px); border-color:#999; color:#fff; }
+
+.right-panel::-webkit-scrollbar { width: 10px; height: 10px; }
+.right-panel::-webkit-scrollbar-track { background: #111; border-left: 2px solid #222; }
+.right-panel::-webkit-scrollbar-thumb { background: #3b3b3b; border-radius: 6px; border: 1px solid #555; }
+
+@media (max-width: 900px) {
+  .main { flex-direction: column; padding: 12px; gap: 12px; }
+  .right-panel { min-width: auto; order: 2; }
+  .left-panel { order: 1; }
+  .sprite-box { flex-direction: row; padding: 14px; gap: 14px; }
+}
+
+@media (max-width: 520px) {
+  .sprite-box {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+  }
+  .sprite-box img { width: 140px; height: 140px; }
+  .seen-owned { align-items: center; text-align: center; max-width: 100%; }
+  .pokemon-name { font-size: 20px; padding: 10px; }
+}
+
+.info-box {
+  margin-top: 20px;
+  background: radial-gradient(circle at top left, #111 0%, #000 80%);
+  border: 2px solid #444;
+  border-radius: 14px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+  padding: 20px 25px;
+  width: 100%;
+  max-width: 700px;
+  margin-inline: auto;
+  color: #f0f0f0;
+  font-family: 'Cinzel', serif;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.info-content {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  justify-content: center;
+}
+
+.info-image img {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+  transition: transform 0.3s ease-in-out;
+}
+
+.info-image img:hover {
+  transform: scale(1.1);
+}
+
+.info-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.info-text h2 {
+  margin: 0 0 10px;
+  font-size: 1.8rem;
+  color: #f5d67b;
+  text-shadow: 0 0 5px #f5d67b50;
+}
+
+.info-text p {
+  margin: 4px 0;
+  font-size: 1rem;
+  color: #ddd;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-editar,
+.btn-eliminar {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-editar {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #0056b3;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+}
+
+.btn-eliminar {
+  background-color: #7a0000;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background-color: #a80000;
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+/* Formulario de edición */
+.edit-form {
+  background-color: #111;
+  border: 1px solid #333;
+  padding: 16px;
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+  margin-top: 20px;
+}
+
+.edit-form input {
+  width: 90%;
+  margin: 6px 0;
+  padding: 8px;
+  background: #222;
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: white;
+}
+
+.edit-form input:focus {
+  border-color: #f5d67b;
+}
+
+.save-btn {
+  background-color: #00b300;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  margin: 6px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  background-color: #555;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  margin: 6px;
+  cursor: pointer;
+}
+
+.btn-editar {
+  background-color: #008cba;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  margin-left: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-editar:hover {
+  background-color: #0079a5;
+}
+
+.btn-cancelar {
+  background-color: #777;
+  color: white;
+  margin-left: 10px;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-cancelar:hover {
+  background-color: #555;
+}
+
+/* 🌗 BOTÓN DE CAMBIO DE TEMA */
+.btn-tema {
+  background: none;
+  border: 1px solid #999;
+  border-radius: 8px;
+  color: #eee;
+  margin-left: 1rem;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: all 0.3s ease;
+}
+
+.btn-tema:hover {
+  background: #444;
+}
+
+/* ☀️ MODO CLARO */
+.light-mode {
+  background-color: #f4f4f4;
+  color: #111;
+}
+
+.light-mode .header {
+  background: #e2e2e2;
+  color: #222;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .info-box,
+.light-mode .right-panel,
+.light-mode .left-panel {
+  background: #ffffff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .formulario input,
+.light-mode .formulario button {
+  background: #f9f9f9;
+  color: #222;
+  border: 1px solid #bbb;
+}
+
+.light-mode .formulario button:hover {
+  background: #ddd;
+}
+
+.light-mode .dex-button {
+  background: #e8e8e8;
+  color: #111;
+}
+
+.light-mode .dex-button.active {
+  background: #ccc;
+  color: #000;
+}
+
+/* 🌗 Botón de cambio de tema */
+.btn-tema {
+  background: none;
+  border: 1px solid #999;
+  border-radius: 8px;
+  color: #222;
+  margin-left: 1rem;
+  cursor: pointer;
+  padding: 6px 12px;
+  transition: all 0.3s ease;
+}
+.btn-tema:hover {
+  background: #ddd;
+}
+
+/* ☀️ MODO CLARO REFINADO */
+.light-mode {
+  background-color: #f8f8f8;
+  color: #222;
+}
+
+/* Encabezado */
+.light-mode .header {
+  background: #ececec;
+  color: #111;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Paneles principales */
+.light-mode .left-panel,
+.light-mode .right-panel {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Caja de información del Pokémon */
+.light-mode .info-box {
+  background: #fff;
+  color: #222;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+}
+.light-mode .info-text h2 {
+  color: #222;
+}
+.light-mode .info-text p {
+  color: #444;
+}
+.light-mode .info-text strong {
+  color: #000;
+}
+
+/* Formulario */
+.light-mode .formulario input,
+.light-mode .formulario button {
+  background: #ffffff;
+  color: #222;
+  border: 1px solid #ccc;
+  box-shadow: none;
+}
+.light-mode .formulario input::placeholder {
+  color: #777;
+}
+.light-mode .formulario button {
+  background: #e0e0e0;
+  color: #111;
+  border: 1px solid #aaa;
+  transition: all 0.3s ease;
+}
+.light-mode .formulario button:hover {
+  background: #d0d0d0;
+}
+
+/* Lista de Pokémon */
+.light-mode .dex-list {
+  background: #fafafa;
+  border: 1px solid #ddd;
+}
+.light-mode .dex-button {
+  background: #efefef;
+  color: #222;
+  border: 1px solid #ccc;
+}
+.light-mode .dex-button:hover {
+  background: #ddd;
+}
+.light-mode .dex-button.active {
+  background: #ccc;
+  color: #000;
+}
+
+/* Botones secundarios (editar, eliminar, etc.) */
+.light-mode .btn-editar,
+.light-mode .btn-eliminar {
+  background: #e8e8e8;
+  color: #111;
+  border: 1px solid #aaa;
+}
+.light-mode .btn-editar:hover {
+  background: #cce5ff;
+  border-color: #99cfff;
+}
+.light-mode .btn-eliminar:hover {
+  background: #fdd;
+  border-color: #f99;
+}
+
+/* Botón mostrar lista */
+.light-mode .boton-toggle {
+  background: #222;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.light-mode .boton-toggle:hover {
+  background: #333;
+}
+
+/* Texto de títulos */
+.light-mode h3 {
+  color: #222;
+  font-weight: 600;
+}
+
+/* Carrusel */
+.light-mode .carrusel {
+  background: #fafafa;
+}
+.light-mode .carrusel img {
+  filter: none;
+}
+
+/* Ajuste general para contraste */
+.light-mode * {
+  text-shadow: none;
+}
+
+body, .pokedex-retro, .left-panel, .right-panel, .info-box, .header {
+  transition: all 1s ease-in-out;
+}
+
+/* ✨ Barra de selección de fuentes */
+.config-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.font-scroll {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 transparent;
+  padding: 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+}
+
+.font-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+.font-scroll::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 10px;
+}
+
+.font-btn {
+  background: #eee;
+  color: #222;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-right: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  min-width: 120px;
+}
+
+.font-btn:hover {
+  background: #ddd;
+}
+
+.font-btn.active {
+  background: #222;
+  color: #fff;
+  border-color: #111;
+}
