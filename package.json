@@ -1,4 +1,6 @@
 {
+  "homepage": "elreyarturo2006.github.io",
+
   "name": "pokedex",
   "version": "0.1.0",
   "private": true,
@@ -9,12 +11,15 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.13.2",
     "color-thief-browser": "^2.0.2",
+    "firebase": "^12.6.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
